@@ -54,23 +54,18 @@ http://localhost:3000/api-docs
 
 ```
 
-### Step-by-Step Usage
+## Step-by-Step Usage
 
-# 1. Register a User
+```bash
 
-# 2. Login User
+1. Register a User
+2. Login User
+3. Create a Display
+4. Create Slots
+5. Get Available Slots
+6. Book a Slot - Booking API (/bookings)
+7. Initiate Payment
+8. Confirm Payment
+9. View User Bookings
 
-# 3. Create a Display
-
-# 4. Create Slots
-
-# 5. Get Available Slots
-
-# 6. Book a Slot - Booking API (/bookings)
-
-# 7. Initiate Payment
-
-# 8. Confirm Payment
-
-# 9. View User Bookings
-
+```
