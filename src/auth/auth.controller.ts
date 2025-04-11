@@ -34,7 +34,7 @@ export class AuthController {
       secure: true,
       sameSite: 'strict',
     });
-    return { accessToken: tokens.accessToken };
+    return tokens;
   }
 
   @UseGuards(RefreshJwtGuard)

@@ -34,15 +34,6 @@ export class RefreshJwtGuard extends AuthGuard('jwt') {
     }
   }
 
-  // private extractRefreshToken(request: Request): string | undefined {
-  //   const bodyToken = request.body?.refreshToken;
-  //   const headerAuth = request.headers.authorization?.split(' ');
-  //   const headerToken =
-  //     headerAuth?.[0] === 'Bearer' ? headerAuth?.[1] : undefined;
-
-  //   return bodyToken || headerToken;
-  // }
-
   private extractRefreshToken(request: Request): string | undefined {
     const body = request.body as { refreshToken?: string };
     const bodyToken = body?.refreshToken;

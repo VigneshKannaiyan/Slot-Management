@@ -69,6 +69,7 @@
       "get": {
         "tags": ["User"],
         "summary": "Get user by email",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "email",
@@ -87,6 +88,7 @@
       "get": {
         "tags": ["User"],
         "summary": "Get user by id",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -105,6 +107,7 @@
       "post": {
         "tags": ["Booking"],
         "summary": "Create a booking",
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {
@@ -122,6 +125,7 @@
       "get": {
         "tags": ["Booking"],
         "summary": "Get bookings by user",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "userId",
@@ -140,6 +144,7 @@
       "post": {
         "tags": ["Display"],
         "summary": "Create a display",
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {
@@ -155,6 +160,7 @@
       "get": {
         "tags": ["Display"],
         "summary": "Get all displays",
+        "security": [{ "bearerAuth": [] }],
         "responses": {
           "200": { "description": "List of all displays" }
         }
@@ -164,6 +170,7 @@
       "get": {
         "tags": ["Display"],
         "summary": "Get display by ID",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -180,6 +187,7 @@
       "delete": {
         "tags": ["Display"],
         "summary": "Delete display by ID",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -198,6 +206,7 @@
       "post": {
         "tags": ["Slot"],
         "summary": "Create a slot",
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {
@@ -215,6 +224,7 @@
       "get": {
         "tags": ["Slot"],
         "summary": "Get available slots by usage type or displayId",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "usageType",
@@ -239,6 +249,7 @@
       "patch": {
         "tags": ["Slot"],
         "summary": "Update slot status",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -265,6 +276,7 @@
       "get": {
         "tags": ["Slot"],
         "summary": "Get slot by ID",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -336,7 +348,7 @@
       "RefreshTokenDto": {
         "type": "object",
         "properties": {
-          "userId": { "type": "string" },
+          "userId": { "type": "string", "example": "67f82ecf0b32abcd5781a852" },
           "refreshToken": { "type": "string" }
         }
       },
@@ -428,7 +440,7 @@
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
-        "scheme": "bearer"
+        "scheme": "Bearer"
       }
     }
   }

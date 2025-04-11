@@ -35,7 +35,6 @@ export class AuthService {
     if (!match) throw new ForbiddenException('Invalid credentials');
 
     const tokens = await this.generateTokens(user.id, user.email);
-    // await this.updateRefreshToken(user.id, tokens.refreshToken);
     return tokens;
   }
 
@@ -45,18 +44,15 @@ export class AuthService {
     });
     if (!user) throw new ForbiddenException('Access Denied');
 
-    // const isValid = await bcrypt.compare(data.refreshToken, user.refreshToken);
-    // if (!isValid) throw new ForbiddenException('Invalid refresh token');
     try {
       await this.jwtService.verifyAsync(data.refreshToken, {
-        secret: process.env.REFRESH_TOKEN_SECRET,
+        secret: process.env.JWT_REFRESH_TOKEN,
       });
     } catch {
       throw new ForbiddenException('Invalid refresh token');
     }
 
     const tokens = await this.generateTokens(user.id, user.email);
-    // await this.updateRefreshToken(user.id, tokens.refreshToken);
     return tokens;
   }
 
@@ -64,11 +60,11 @@ export class AuthService {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         { sub: userId, email },
-        { secret: process.env.JWT_SECRET, expiresIn: '15m' },
+        { secret: process.env.JWT_SECRET_KEY, expiresIn: '15m' },
       ),
       this.jwtService.signAsync(
         { sub: userId, email },
-        { secret: process.env.REFRESH_TOKEN_SECRET, expiresIn: '7d' },
+        { secret: process.env.JWT_REFRESH_TOKEN, expiresIn: '7d' },
       ),
     ]);
     return {
@@ -76,12 +72,4 @@ export class AuthService {
       refreshToken,
     };
   }
-
-  // async updateRefreshToken(userId: string, refreshToken: string) {
-  //   const hashed = await bcrypt.hash(refreshToken, 10);
-  //   await this.prisma.user.update({
-  //     where: { id: userId },
-  //     data: { refreshToken: hashed },
-  //   });
-  // }
 }
