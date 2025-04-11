@@ -37,10 +37,14 @@ A backend API built with **NestJS** and **Prisma**, designed for managing users,
 
 ### ENV DETAIL ARE GIVEN HERE USE THEM IN THE .env FILE
 
-PORT=8080
+```bash
+
+PORT = 8080
 DATABASE_URL = "mongodb://localhost:27017/slot-management"
 JWT_SECRET_KEY = "your_secret_key"
 JWT_REFRESH_TOKEN = "your_refresh_token"
+
+```
 
 ### RUN THIS COMMAND TO RUN THE PRISMA CLIENT
 
