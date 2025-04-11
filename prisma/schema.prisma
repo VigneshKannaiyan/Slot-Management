@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum SlotStatus {
+  AVAILABLE
+  RESERVED
+  IN_USE
+  EXPIRED
+}
+
+enum UsageType {
+  PERSONAL
+  THIRD_PARTY
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum DisplayStatus {
+  ACTIVE
+  INACTIVE
+  UNDER_MAINTENANCE
+}
+
+model Booking {
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
+  slotId        String
+  userId        String
+  status        BookingStatus @default(PENDING)
+  timestamp     DateTime      @default(now())
+  paymentStatus PaymentStatus @default(PENDING)
+  Slot          Slot          @relation(fields: [slotId], references: [id])
+  User          User          @relation(fields: [userId], references: [id])
+  payments      Payment[]
+}
+
+// booking_id, slot_id, user_id, payment_status, timestamp
+
+model Slot {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  displayId String
+  startTime DateTime
+  endTime   DateTime
+  usageType UsageType
+  price     Float
+  status    SlotStatus
+  bookings  Booking[]
+  Display   Display    @relation(fields: [displayId], references: [id])
+}
+
+// slot_id, display_id, start_time, end_time, usage_type, price, status
+
+model Display {
+  id       String        @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId  String
+  location String
+  status   DisplayStatus
+  slots    Slot[]
+}
+
+// display_id, owner_id, location, status.
+
+model User {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  username  String
+  email     String    @unique
+  password  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  bookings  Booking[]
+}
+
+model Payment {
+  id        String        @id @default(auto()) @map("_id") @db.ObjectId
+  bookingId String
+  amount    Float
+  status    PaymentStatus @default(PENDING)
+  createdAt DateTime      @default(now())
+  Booking   Booking       @relation(fields: [bookingId], references: [id])
+}

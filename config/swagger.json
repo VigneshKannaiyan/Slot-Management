@@ -1,0 +1,435 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Slot Management API",
+    "version": "1.0.0"
+  },
+  "tags": [
+    { "name": "Auth", "description": "Authentication related endpoints" },
+    { "name": "User", "description": "User management endpoints" },
+    { "name": "Display", "description": "Display management endpoints" },
+    { "name": "Slot", "description": "Slot management endpoints" },
+    { "name": "Booking", "description": "Booking related endpoints" },
+    { "name": "Payment", "description": "Payment processing endpoints" }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Register a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RegisterDto" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "User registered" }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login user and set refresh token cookie",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LoginDto" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Login successful, access token returned" }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Refresh access and refresh tokens",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RefreshTokenDto" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "New access token and refresh token set" }
+        }
+      }
+    },
+    "/users/byEmail": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user by email",
+        "parameters": [
+          {
+            "name": "email",
+            "example": "michael@kee.com",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "User Profile By Email" }
+        }
+      }
+    },
+    "/users/byId": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user by id",
+        "parameters": [
+          {
+            "name": "id",
+            "example": "67f82ecf0b32abcd5781a852",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "User Profile By Id" }
+        }
+      }
+    },
+    "/bookings": {
+      "post": {
+        "tags": ["Booking"],
+        "summary": "Create a booking",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateBookingDto" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Booking created" }
+        }
+      }
+    },
+    "/bookings/userId": {
+      "get": {
+        "tags": ["Booking"],
+        "summary": "Get bookings by user",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "example": "67f82ecf0b32abcd5781a852",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "List of bookings" }
+        }
+      }
+    },
+    "/displays": {
+      "post": {
+        "tags": ["Display"],
+        "summary": "Create a display",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateDisplayDto" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Display created" }
+        }
+      },
+      "get": {
+        "tags": ["Display"],
+        "summary": "Get all displays",
+        "responses": {
+          "200": { "description": "List of all displays" }
+        }
+      }
+    },
+    "/displays/id": {
+      "get": {
+        "tags": ["Display"],
+        "summary": "Get display by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "example": "67f83b839f4a9c741b2af809",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Display found" }
+        }
+      },
+      "delete": {
+        "tags": ["Display"],
+        "summary": "Delete display by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "example": "67f83b839f4a9c741b2af809",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Display deleted" }
+        }
+      }
+    },
+    "/slots": {
+      "post": {
+        "tags": ["Slot"],
+        "summary": "Create a slot",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateSlotDto" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Slot created" }
+        }
+      }
+    },
+    "/slots/available": {
+      "get": {
+        "tags": ["Slot"],
+        "summary": "Get available slots by usage type or displayId",
+        "parameters": [
+          {
+            "name": "usageType",
+            "in": "query",
+            "schema": { "type": "string", "enum": ["PERSONAL", "THIRD_PARTY"] }
+          },
+          {
+            "name": "displayId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "67f83b839f4a9c741b2af809"
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "List of available slots" }
+        }
+      }
+    },
+    "/slots/id/status": {
+      "patch": {
+        "tags": ["Slot"],
+        "summary": "Update slot status",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "example": "67f83efbea73ce0234f0df7f",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateSlotStatusDto" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Slot status updated" }
+        }
+      }
+    },
+    "/slots/id": {
+      "get": {
+        "tags": ["Slot"],
+        "summary": "Get slot by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "example": "67f83efbea73ce0234f0df7f",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Slot found" }
+        }
+      }
+    },
+    "/payment/byBookingId": {
+      "post": {
+        "tags": ["Payment"],
+        "summary": "Initiate a payment by booking id",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/InitiatePaymentDto" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Payment initiated" }
+        }
+      }
+    },
+    "/payment/confirm/byId": {
+      "put": {
+        "tags": ["Payment"],
+        "summary": "Confirm a payment by ID",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ConfirmPaymentDto" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Payment confirmed" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegisterDto": {
+        "type": "object",
+        "properties": {
+          "username": { "type": "string", "example": "Michael" },
+          "email": { "type": "string", "example": "michael@kee.com" },
+          "password": { "type": "string", "example": "Michael2025" }
+        }
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string", "example": "michael@kee.com" },
+          "password": { "type": "string", "example": "Michael2025" }
+        }
+      },
+      "RefreshTokenDto": {
+        "type": "object",
+        "properties": {
+          "userId": { "type": "string" },
+          "refreshToken": { "type": "string" }
+        }
+      },
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {
+          "username": { "type": "string" },
+          "email": { "type": "string" },
+          "password": { "type": "string" }
+        }
+      },
+      "CreateBookingDto": {
+        "type": "object",
+        "properties": {
+          "slotId": { "type": "string" },
+          "userId": { "type": "string" },
+          "paymentStatus": {
+            "type": "string",
+            "enum": ["pending", "completed", "failed"]
+          }
+        }
+      },
+      "CreateDisplayDto": {
+        "type": "object",
+        "properties": {
+          "ownerId": { "type": "string" },
+          "location": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["ACTIVE", "INACTIVE", "UNDER_MAINTENANCE"]
+          }
+        },
+        "required": ["ownerId", "location", "status"]
+      },
+      "CreateSlotDto": {
+        "type": "object",
+        "properties": {
+          "displayId": {
+            "type": "string",
+            "example": "67f83b839f4a9c741b2af809"
+          },
+          "startTime": { "type": "string", "format": "date-time" },
+          "endTime": { "type": "string", "format": "date-time" },
+          "usageType": {
+            "type": "string",
+            "enum": ["PERSONAL", "THIRD_PARTY"]
+          },
+          "price": { "type": "number", "example": 200.75 }
+        },
+        "required": ["displayId", "startTime", "endTime", "usageType", "price"]
+      },
+      "UpdateSlotStatusDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["AVAILABLE", "RESERVED", "IN_USE", "EXPIRED"]
+          }
+        },
+        "required": ["status"]
+      },
+      "InitiatePaymentDto": {
+        "type": "object",
+        "properties": {
+          "bookingId": {
+            "type": "string",
+            "example": "67f8fb60957a7eeeee78ed4c"
+          },
+          "amount": { "type": "number", "example": 200.75 },
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "SUCCESS", "FAILED", "REFUNDED"]
+          }
+        },
+        "required": ["bookingId", "amount", "status"]
+      },
+      "ConfirmPaymentDto": {
+        "type": "object",
+        "properties": {
+          "paymentId": {
+            "type": "string",
+            "example": "67f8fe9b97196abec47ac08f"
+          },
+          "status": { "type": "string", "enum": ["SUCCESS", "FAILED"] }
+        },
+        "required": ["status", "paymentId"]
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}
