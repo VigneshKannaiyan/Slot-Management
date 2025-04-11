@@ -73,3 +73,7 @@ http://localhost:3000/api-docs
 9. View User Bookings
 
 ```
+
+⚠️ Note on Payment
+💡 No actual payment gateway has been integrated. This is a sample/test project using a mock payment system for demonstration and assessment purposes.
+
